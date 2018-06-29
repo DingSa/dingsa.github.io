@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>DingSa</title>
   
-  
+  <subtitle>My blogs and notes.</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dingsa.github.io/"/>

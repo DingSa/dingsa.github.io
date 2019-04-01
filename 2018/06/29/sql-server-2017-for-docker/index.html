@@ -17,20 +17,18 @@
 <!-- End Google Analytics -->
 
 
-  <script data-isso="//101.132.181.57:84/"
-          src="//101.132.181.57:84/js/embed.min.js"></script>
   
   <title>安装 SQL Server 2017 for Docker | DingSa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="1. 先决条件 Docker 引擎 1.8 以上版本 至少 2 GB 的磁盘空间 至少 2 GB 的 RAM Linux 上的 SQL Server 的系统要求  2. 拉取查找镜像1docker search mssql 12345NAME                                                  DESCRIPTION">
-<meta name="keywords" content="mssql,docker">
+<meta name="keywords" content="docker,mssql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="安装 SQL Server 2017 for Docker">
 <meta property="og:url" content="https://dingsa.github.io/2018/06/29/sql-server-2017-for-docker/index.html">
 <meta property="og:site_name" content="DingSa">
 <meta property="og:description" content="1. 先决条件 Docker 引擎 1.8 以上版本 至少 2 GB 的磁盘空间 至少 2 GB 的 RAM Linux 上的 SQL Server 的系统要求  2. 拉取查找镜像1docker search mssql 12345NAME                                                  DESCRIPTION">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-02T04:53:26.472Z">
+<meta property="og:updated_time" content="2019-04-01T12:09:34.153Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安装 SQL Server 2017 for Docker">
 <meta name="twitter:description" content="1. 先决条件 Docker 引擎 1.8 以上版本 至少 2 GB 的磁盘空间 至少 2 GB 的 RAM Linux 上的 SQL Server 的系统要求  2. 拉取查找镜像1docker search mssql 12345NAME                                                  DESCRIPTION">
@@ -123,6 +121,9 @@
 <p>查找镜像所有版本, 参阅 <a href="https://hub.docker.com/r/microsoft/mssql-server-linux/tags/" target="_blank" rel="noopener">microsoft/mssql-server-linux</a>, 或直接在 <a href="https://hub.docker.com/" target="_blank" rel="noopener">Docker Hub</a> 搜索.</p>
 <a id="more"></a>
 <h3 id="拉取镜像到本地"><a href="#拉取镜像到本地" class="headerlink" title="拉取镜像到本地"></a>拉取镜像到本地</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull microsoft/mssql-server-linux:2017-latest</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>2019-4-1 更新<br>旧镜像仓库将来不再使用，并且 SQL Server 2019 只能在新仓库中获取，新仓库地址为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; sudo docker pull mcr.microsoft.com/mssql/server:2017-latest</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
 <h3 id="镜像类型"><a href="#镜像类型" class="headerlink" title="镜像类型"></a>镜像类型</h3><p>Windows Container 分为 Windows Server Container 和 Hyper-V Isolation 两种类型, 只有 Hyper-V Ioslation 可以切换到 Linux 内核支持并通过管理工具或以下命令进行切换:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp; &apos;C:\Program Files\Docker\Docker\DockerCli.exe&apos; -SwitchDaemon</span><br></pre></td></tr></table></figure>
 <p>如果拉取镜像时发生错误:  </p>
@@ -137,6 +138,9 @@
 </blockquote>
 <p>相关信息可以参阅 <a href="https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/index#windows-container-types" target="_blank" rel="noopener">Windows Container Types</a>.<br>尝试同时运行两种类型容器可以参阅 <a href="https://stefanscherer.github.io/run-linux-and-windows-containers-on-windows-10/" target="_blank" rel="noopener">Run Linux and Windows Containers on Windows 10</a>.  </p>
 <h2 id="3-运行"><a href="#3-运行" class="headerlink" title="3. 运行"></a>3. 运行</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -e &quot;ACCEPT_EULA=Y&quot; -e &quot;MSSQL_SA_PASSWORD=&lt;YourStrong!Passw0rd&gt;&quot; `</span><br><span class="line">   -p 1401:1433 --name sql1 `</span><br><span class="line">   -d microsoft/mssql-server-linux:2017-latest</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>2019-4-1 更新<br>在较新版本的 SQL Server 2017 中，”MSSQL_SA_PASSWORD” 改为 “SA_PASSWORD”，即与 Windows Container 的参数保持一致。</p>
+</blockquote>
 <p>创建一个 Hyper-V Container 可以参阅 <a href="https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-containers/hyperv-container#hyper-v-container" target="_blank" rel="noopener">Hyper-V container</a>.<br>默认运行版本为 Developer Edition. 运行生产版本参阅 <a href="https://docs.microsoft.com/zh-cn/sql/linux/sql-server-linux-configure-docker?view=sql-server-linux-2017#production" target="_blank" rel="noopener">Run production container images</a>.</p>
 <h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><table>
 <thead>
@@ -151,7 +155,7 @@
 <td>将 <strong>ACCEPT_EULA</strong> 变量设置为任意值，以确认接受<a href="http://go.microsoft.com/fwlink/?LinkId=746388" target="_blank" rel="noopener">最终用户许可协议</a>。 SQL Server 映像的必需设置。</td>
 </tr>
 <tr>
-<td>-e ‘MSSQL_SA_PASSWORD=&lt;YourStrong!Passw0rd&gt;’</td>
+<td>-e ‘MSSQL_SA_PASSWORD=&lt;YourStrong!Passw0rd&gt;’ （新版本中为’SA_PASSWORD’）</td>
 <td>指定至少包含 8 个字符且符合<a href="https://docs.microsoft.com/zh-cn/sql/relational-databases/security/password-policy?view=sql-server-linux-2017" target="_blank" rel="noopener">SQL Server 密码要求</a>的强密码。 SQL Server 映像的必需设置。</td>
 </tr>
 <tr>
@@ -179,7 +183,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://dingsa.github.io/2018/06/29/sql-server-2017-for-docker/" data-id="cjj455nuk000074t7i2r2bksd" class="article-share-link">Share</a>
+      <a data-url="https://dingsa.github.io/2018/06/29/sql-server-2017-for-docker/" data-id="cjtybbkho00001gt7bt4gvfmj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mssql/">mssql</a></li></ul>
@@ -200,10 +204,6 @@
 
    -->
 </article>
-
-<section id="comments">
-  <section id="isso-thread"></section>
-</section>
 
 </section>
         
@@ -255,7 +255,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2018 DingSa<br>
+      &copy; 2019 DingSa<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
